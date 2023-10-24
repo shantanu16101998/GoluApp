@@ -12,7 +12,7 @@ export interface getPlatformRequest {
 }
 
 export interface getPlatformResponse {
-    platformData: [platformData]
+    platformData: [platformData | null]
 }
 
 export interface platformData {
@@ -34,29 +34,24 @@ export interface getPostRequest {
 }
 
 export interface getPostResponse {
-    posted:
-    [
-        postedData
-    ],
+    posted: PostedData[],
 
-    scheduled:
-    [
-        scheduledData
-    ]
+    scheduled: ScheduledData[]
+
 }
 
-export interface postedData {
-    imageLink: String,
+export interface PostedData {
+    imageLink: String[],
     message: String,
-    platforms: [{ id: String, platform: String, name: String }]
+    platforms: { id: String, platform: String, name: String }[]
     timeOfPost: String
 }
 
-export interface scheduledData {
-    imageLink: String,
+export interface ScheduledData {
+    imageLink: String[],
     message: String,
     scheduledTime: String
-    platforms: [String]
+    platforms: { id: String, platform: String, name: String }[]
 }
 
 export interface putAPostRequest {

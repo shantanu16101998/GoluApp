@@ -10,12 +10,37 @@ let userToken = ""
 
 const collection = database.collection(userCollectionName);
 
+async function isConnected(userName: String): Promise<boolean> {
+  const user = await collection.findOne({ userName: userName })
+  let isConnected = false;
+  console.log(user)
+
+  if (user && user.facebookAccessToken) {
+
+    const accessToken = user.facebookAccessToken
+
+    await axiosModule.get('https://graph.facebook.com/v18.0/me?access_token=' + accessToken + '&fields=id,name')
+    .then((response: any) => {
+      if(response && response.data && response.data.id)
+      {
+        isConnected =  true;
+      }
+    })
+    .catch((error:any) => {
+    })
+  }
+  return isConnected;
+}
+
 function auth(request: {}, response: any) {
-  return response.redirect('https://www.facebook.com/v15.0/dialog/oauth?response_type=code&client_id=' + facebookConfig.client_id + '&redirect_uri=' + facebookConfig.redirect_uri)
+  return response.redirect('https://www.facebook.com/v15.0/dialog/oauth?response_type=code&client_id=' + facebookConfig.client_id + '&redirect_uri=' + facebookConfig.redirect_uri + '&state=shantanu16101998@gmail.com')
 }
 
 async function authCallback(request: any, response: any) {
+
+  console.log("request is",request.query)
   const code = request.query.code;
+  const state = request.query.state;
 
 
   axiosModule.post('https://graph.facebook.com/v15.0/oauth/access_token?code=' + code + '&client_id=' + facebookConfig.client_id + '&client_secret=' + facebookConfig.client_secret + '&redirect_uri=' + facebookConfig.redirect_uri)
@@ -30,13 +55,13 @@ async function authCallback(request: any, response: any) {
 
 
         const user: User = {
-          userName: responseUser.data.id,
+          userName: state,
           facebookAccessToken: access_token
         }
 
         try {
           const insertOneResult = await collection.insertOne(user);
-          console.log(`${insertOneResult.insertedCount} documents successfully inserted.\n`);
+          console.log(`documents successfully inserted.\n`);
         } catch (err) {
           console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
         }
@@ -81,5 +106,6 @@ module.exports = {
   auth,
   authCallback,
   getPages,
-  postInPage
+  postInPage,
+  isConnected
 };

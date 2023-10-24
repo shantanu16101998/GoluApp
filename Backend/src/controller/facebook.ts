@@ -2,8 +2,7 @@ const expressFacebook = require('express');
 const router = expressFacebook.Router();
 import { PagesRequest } from '../dao/facebook';
 
-// Import the Facebook service
-const facebookService = require('../service/facebook'); // Adjust the path as needed
+const facebookService = require('../service/facebook'); 
 
 // Define the routes
 router.get('/', async (req: {}, res: any) => {
