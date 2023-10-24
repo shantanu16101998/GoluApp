@@ -10,9 +10,11 @@ app.use(bodyParser.json());
 
 // Import your Facebook API routes
 const facebookRoutes = require('./controller/facebook');
+const mainRoutes = require('./controller/main')
 
 // Use the Facebook API routes
 app.use('/facebook', facebookRoutes);
+app.use('/', mainRoutes);
 
 
 app.listen(port, () => {
