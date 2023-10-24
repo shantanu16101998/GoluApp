@@ -9,7 +9,7 @@ import { postDtoTogetPostResponse } from '../mapper/main'
 const collection = database.collection(postCollectionName);
 
 
-export async function getPosts(userName: String): Promise<getPostResponse | any> {
+export async function getPosts(userName: String): Promise<getPostResponse> {
 
     const post: Post[] = await collection.find({ userName: userName }).toArray()
 
