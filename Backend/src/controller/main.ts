@@ -15,7 +15,6 @@ import {
 
 
 
-// Define the routes
 router.get('/internal/callback', async (req: {}, res: any) => {
 
 });
