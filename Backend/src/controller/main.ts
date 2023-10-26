@@ -13,23 +13,26 @@ import {
     putAPostResponse
 } from '../dao/main';
 
+import logger from '../utils/logger';
+
 const facebookService = require('../service/facebook');
 const mainService = require('../service/main');
 
 import { Request, Response } from 'express';
 
-router.get('/',async (req: Request,res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     const response = "Welcome to Golu App"
+    logger.info('GET: /');
     res.status(200).json(response)
 })
 
 
 router.post('/auth/token', async (req: tokenRequest, res: tokenResponse) => {
-
+    logger.info('GET: /auth/token');
 });
 
 router.get('/getPlatforms', async (req: Request, res: Response) => {
-
+    logger.info('GET: /getPlatforms');
     const body: getPlatformRequest = req.body
     const response: getPlatformResponse = {
         platformData: [
@@ -43,11 +46,13 @@ router.get('/getPlatforms', async (req: Request, res: Response) => {
 });
 
 router.post('/connect', async (req: connectRequest, res: connectResponse) => {
+    logger.info('POST: /connect');
 
 })
 
 router.get('/post', async (req: Request, res: Response) => {
 
+    logger.info('GET: /post');
     const body: getPostRequest = req.body
     const response: getPostResponse = await mainService.getPosts(body.jwtToken)
 
@@ -56,6 +61,7 @@ router.get('/post', async (req: Request, res: Response) => {
 })
 
 router.post('/post', async (req: putAPostRequest, res: putAPostResponse) => {
+    logger.info('POST: /post');
 })
 
 module.exports = router;
