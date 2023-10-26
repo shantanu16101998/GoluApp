@@ -81,3 +81,12 @@ export interface putAPostResponse {
         }
     ]
 }
+
+export interface FacebookPagesList {
+    names : String[]   
+}
+
+export interface ExceptionResponse {
+    errorMessage : String
+    errorCode : String
+}

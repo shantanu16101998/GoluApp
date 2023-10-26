@@ -18,7 +18,10 @@ const mainService = require('../service/main');
 
 import { Request, Response } from 'express';
 
-
+router.get('/',async (req: Request,res: Response) => {
+    const response = "Welcome to Golu App"
+    res.status(200).json(response)
+})
 
 
 router.post('/auth/token', async (req: tokenRequest, res: tokenResponse) => {

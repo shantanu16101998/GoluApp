@@ -7,8 +7,6 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-
-// Import your Facebook API routes
 const facebookRoutes = require('./controller/facebook');
 const mainRoutes = require('./controller/main')
 

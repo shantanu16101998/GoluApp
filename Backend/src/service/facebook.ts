@@ -1,14 +1,47 @@
 const facebookConfig = require('../config/facebook')
 const axiosModule = require('axios')
+import express, { Request, Response } from 'express';
 
 import { error } from 'console'
 import { database, userCollectionName } from '../database/mongo'
 
 import { User } from '../dto/user'
+import { FacebookPagesList, ExceptionResponse } from '../dao/main'
 
 let userToken = ""
 
 const collection = database.collection(userCollectionName);
+
+/**
+ * 
+  Untested code please do test and remove the comment before use
+ */
+async function getPagesFromUserName(userName: String, response: Response) {
+  const user = await collection.findOne({ userName: userName })
+
+  if (user && user.facebookAccessToken) {
+    axiosModule.get('https://graph.facebook.com/v15.0/me/accounts?access_token=' + user.facebookAccessToken).then(async (facebookResponse: any) => {
+      let namesOfPages: String[] = facebookResponse?.data.data.map((instance: any) => instance.name)
+
+      let responseOfList: FacebookPagesList = {
+        names: namesOfPages
+      }
+      
+      return response.json(responseOfList)
+
+    })
+      .catch((error: any) => {
+        return response.json(error)
+      })
+  }
+
+  let exceptionResponse: ExceptionResponse = {
+    errorMessage: "Unable to find facebook access token",
+    errorCode: "USER_NOT_REGISTERED"
+  }
+  return response.status(404).json(exceptionResponse);
+
+}
 
 async function isConnected(userName: String): Promise<boolean> {
   const user = await collection.findOne({ userName: userName })
@@ -20,14 +53,13 @@ async function isConnected(userName: String): Promise<boolean> {
     const accessToken = user.facebookAccessToken
 
     await axiosModule.get('https://graph.facebook.com/v18.0/me?access_token=' + accessToken + '&fields=id,name')
-    .then((response: any) => {
-      if(response && response.data && response.data.id)
-      {
-        isConnected =  true;
-      }
-    })
-    .catch((error:any) => {
-    })
+      .then((response: any) => {
+        if (response && response.data && response.data.id) {
+          isConnected = true;
+        }
+      })
+      .catch((error: any) => {
+      })
   }
   return isConnected;
 }
@@ -38,7 +70,6 @@ function auth(request: {}, response: any) {
 
 async function authCallback(request: any, response: any) {
 
-  console.log("request is",request.query)
   const code = request.query.code;
   const state = request.query.state;
 
@@ -107,5 +138,6 @@ module.exports = {
   authCallback,
   getPages,
   postInPage,
-  isConnected
+  isConnected,
+  getPagesFromUserName
 };
