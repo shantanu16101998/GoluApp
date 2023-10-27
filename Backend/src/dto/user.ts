@@ -1,5 +1,5 @@
 export interface User {
-    userName : String | null
-    facebookAccessToken : String | null
+    userName : string | null
+    facebookAccessToken : string | null
 }
 

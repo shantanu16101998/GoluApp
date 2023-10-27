@@ -16,14 +16,14 @@ const collection = database.collection(userCollectionName);
  * 
   Untested code please do test and remove the comment before use
  */
-async function getPagesFromUserName(userName: String, response: Response) {
+async function getPagesFromUserName(userName: string, response: Response) {
   const user = await collection.findOne({ userName: userName })
 
   if (user && user.facebookAccessToken) {
     axiosModule.get('https://graph.facebook.com/v15.0/me/accounts?access_token=' + user.facebookAccessToken).then(async (facebookResponse: any) => {
-      let namesOfPages: String[] = facebookResponse?.data.data.map((instance: any) => instance.name)
+      const namesOfPages: string[] = facebookResponse?.data.data.map((instance: any) => instance.name)
 
-      let responseOfList: FacebookPagesList = {
+      const responseOfList: FacebookPagesList = {
         names: namesOfPages
       }
       
@@ -35,7 +35,7 @@ async function getPagesFromUserName(userName: String, response: Response) {
       })
   }
 
-  let exceptionResponse: ExceptionResponse = {
+  const exceptionResponse: ExceptionResponse = {
     errorMessage: "Unable to find facebook access token",
     errorCode: "USER_NOT_REGISTERED"
   }
@@ -43,7 +43,7 @@ async function getPagesFromUserName(userName: String, response: Response) {
 
 }
 
-async function isConnected(userName: String): Promise<boolean> {
+async function isConnected(userName: string): Promise<boolean> {
   const user = await collection.findOne({ userName: userName })
   let isConnected = false;
   console.log(user)

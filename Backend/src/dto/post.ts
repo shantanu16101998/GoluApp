@@ -1,10 +1,10 @@
 export interface Post {
-    userName  :String,
-    images: String[],
-    videos : String[]
-    description: String,
-    platforms: { id: String, platform: String, name: String }[]
-    timeOfPost: String,
+    userName  :string,
+    images: string[],
+    videos : string[]
+    description: string,
+    platforms: { id: string, platform: string, name: string }[]
+    timeOfPost: string,
     isScheduled : boolean
 }
 
