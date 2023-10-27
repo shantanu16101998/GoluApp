@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Humara tumhara sabka app Golu App!!",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx ts-node ./src/server.ts ",
