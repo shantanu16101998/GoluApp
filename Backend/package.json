@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.4",
-    "@types/node": "^20.8.7",
+    "@types/node": "^20.8.8",
     "typescript": "^5.2.2"
   }
 }
