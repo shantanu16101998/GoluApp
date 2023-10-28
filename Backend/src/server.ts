@@ -2,13 +2,12 @@ const express = require('express');
 const axios = require('axios')
 import bodyParser from 'body-parser';
 const app = express();
+import logger from './utils/logger'
 
 const port = 3000;
 
 app.use(bodyParser.json());
 
-
-// Import your Facebook API routes
 const facebookRoutes = require('./controller/facebook');
 const mainRoutes = require('./controller/main')
 
@@ -18,6 +17,6 @@ app.use('/', mainRoutes);
 
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  logger.info(`Server is running on http://localhost:${port}`);
 });
 

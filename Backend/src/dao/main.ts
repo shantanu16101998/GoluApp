@@ -1,69 +1,64 @@
 export interface tokenRequest {
-    email: String,
-    accessToken: String
+    email: string,
+    accessToken: string
 }
 
 export interface tokenResponse {
-    jwtToken: String
+    jwtToken: string
 }
 
 export interface getPlatformRequest {
-    jwtToken: String
+    jwtToken: string
 }
 
 export interface getPlatformResponse {
-    platformData: [platformData]
+    platformData: [platformData | null]
 }
 
 export interface platformData {
-    platform: String,
-    isConnected: Boolean
+    platform: string,
+    isConnected: boolean
 }
 
 export interface connectRequest {
-    platform: String
-    jwtToken: String
+    platform: string
+    jwtToken: string
 }
 
 export interface connectResponse {
-    status: String
+    status: string
 }
 
 export interface getPostRequest {
-    jwtToken: String
+    jwtToken: string
 }
 
 export interface getPostResponse {
-    posted:
-    [
-        postedData
-    ],
+    posted: PostedData[],
 
-    scheduled:
-    [
-        scheduledData
-    ]
+    scheduled: ScheduledData[]
+
 }
 
-export interface postedData {
-    imageLink: String,
-    message: String,
-    platforms: [{ id: String, platform: String, name: String }]
-    timeOfPost: String
+export interface PostedData {
+    imageLink: string[],
+    message: string,
+    platforms: { id: string, platform: string, name: string }[]
+    timeOfPost: string
 }
 
-export interface scheduledData {
-    imageLink: String,
-    message: String,
-    scheduledTime: String
-    platforms: [String]
+export interface ScheduledData {
+    imageLink: string[],
+    message: string,
+    scheduledTime: string
+    platforms: { id: string, platform: string, name: string }[]
 }
 
 export interface putAPostRequest {
-    message: String
-    image: String
-    video: String
-    file: String
+    message: string
+    image: string
+    video: string
+    file: string
     platformData:
     [
         platFormPost
@@ -71,18 +66,27 @@ export interface putAPostRequest {
 }
 
 export interface platFormPost {
-    platform: String,
-    name: String
-    timeOfPost: String
+    platform: string,
+    name: string
+    timeOfPost: string
 }
 
 export interface putAPostResponse {
     platFormResponse:
     [
         {
-            name: String,
-            id: String,
-            status: String
+            name: string,
+            id: string,
+            status: string
         }
     ]
+}
+
+export interface FacebookPagesList {
+    names : string[]   
+}
+
+export interface ExceptionResponse {
+    errorMessage : string
+    errorCode : string
 }
