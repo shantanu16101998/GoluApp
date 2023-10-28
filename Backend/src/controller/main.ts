@@ -19,6 +19,7 @@ const facebookService = require('../service/facebook');
 const mainService = require('../service/main');
 
 import { Request, Response } from 'express';
+import { ExceptionResponse } from '../dao/main'
 
 router.get('/', async (req: Request, res: Response) => {
     const response = "Welcome to Golu App"
@@ -32,18 +33,49 @@ router.post('/auth/token', async (req: tokenRequest, res: tokenResponse) => {
 });
 
 router.get('/getPlatforms', async (req: Request, res: Response) => {
-    logger.info('GET: /getPlatforms');
-    const body: getPlatformRequest = req.body
-    const response: getPlatformResponse = {
-        platformData: [
-            {
-                platform: 'Facebook',
-                isConnected: await facebookService.isConnected(body.jwtToken)
-            }
-        ]
+    try {
+        logger.info('GET: /getPlatforms');
+        const body: getPlatformRequest = req.body;
+        logger.debug('Getting platforms');
+        const response: getPlatformResponse = {
+            platformData: [
+                {
+                    platform: 'Facebook',
+                    isConnected: await facebookService.isConnected(body.jwtToken)
+                }
+            ]
+        };
+        res.json(response);
+    } catch (e) {
+        logger.error(e);
+        if (typeof e === 'string') {
+            const exceptionResponse: ExceptionResponse = {
+                errorMessage: e,
+                errorCode: 'API_CALL_ERROR'
+            };
+            res.status(500).json(exceptionResponse); 
+
+        }
+        else if (typeof e === "object" && e != null) {
+            const exceptionResponse: ExceptionResponse = {
+                errorMessage: e?.toString(),
+                errorCode: 'API_CALL_ERROR'
+            };
+            res.status(500).json(exceptionResponse); 
+
+        }
+        else {
+            const exceptionResponse: ExceptionResponse = {
+                errorMessage: "Something went wrong",
+                errorCode: 'API_CALL_ERROR'
+            };
+            res.status(500).json(exceptionResponse);
+
+        }
+
     }
-    res.json(response)
 });
+
 
 router.post('/connect', async (req: connectRequest, res: connectResponse) => {
     logger.info('POST: /connect');

@@ -1,6 +1,7 @@
 const expressFacebook = require('express');
 const router = expressFacebook.Router();
-import { PagesRequest } from '../dao/facebook';
+import logger from '../utils/logger';
+
 
 const facebookService = require('../service/facebook');
 
@@ -12,8 +13,10 @@ router.get('/auth/callback', async (req: any, res: any) => {
   facebookService.authCallback(req, res);
 });
 
-router.post('/pages', async (req: any, res: any) => {
-  facebookService.getPages(req, res);
+router.get('/pages', async (req: any, res: any) => {
+  logger.info('POST: /facebook/pages');
+  const userName = req.body.userName
+  facebookService.getPages(userName, res);
 });
 
 router.post('/pagesFromUsername', async (req: any, res: any) => {
